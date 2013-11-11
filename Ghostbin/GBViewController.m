@@ -84,7 +84,15 @@
 }
 
 - (void)paste:(id)sender {
-    // Send paste
+    NSString *post = [NSString stringWithFormat:@"text=%@&expire=10d&lang=objective-c", self.textView.text];
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://ghostbin.com/paste/new"]
+                                                                cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                            timeoutInterval:60.0];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"Ghostbin iOS" forHTTPHeaderField:@"User-Agent"];
+    [request setHTTPBody:postData];
+    _connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -92,5 +100,59 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+#pragma mark - NSURLConnectionDelegate
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    if (_responseData) {
+        _responseData = nil;
+    }
+    
+    _responseData = [[NSMutableData alloc] init];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    [_responseData appendData:data];
+}
+
+- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse*)cachedResponse
+{
+    return nil;
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    // The Ghostbin URL is acquired in connection:willSendRequest:redirectResponse.
+    
+    if (_responseData) {
+        _responseData = nil;
+    }
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    if (error) {
+
+    }
+    
+    if (_responseData) {
+        _responseData = nil;
+    }
+}
+
+- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse;
+{
+    if (redirectResponse) {
+        [connection cancel];
+        _uploading = NO;
+        
+        NSLog(@"%@",[[request URL] copy]);
+        return nil;
+    } else {
+        return request;
+    }
+}
+
 
 @end

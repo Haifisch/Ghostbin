@@ -9,6 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "Chromatism/JLTextViewController.h"
 
-@interface GBViewController : JLTextViewController
+@interface GBViewController : JLTextViewController <NSURLConnectionDelegate>{
+    NSMutableData *_responseData;
+    NSURLConnection *_connection;
+    BOOL _uploading;
+
+
+}
+@property(nonatomic, assign, readonly, getter = isUploading) BOOL uploading;
 
 @end
