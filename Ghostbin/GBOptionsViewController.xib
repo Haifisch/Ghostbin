@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="languageField" destination="2bG-L8-E9P" id="Fru-s9-iDo"/>
                 <outlet property="languagePicker" destination="7Nw-HC-9mR" id="fuS-e6-58R"/>
+                <outlet property="segmentControl" destination="br3-wH-xVZ" id="S2H-aT-KO9"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -74,6 +75,9 @@
                         <segment title="Text"/>
                         <segment title="Common Languages"/>
                     </segments>
+                    <connections>
+                        <action selector="segmentLanguage:" destination="-1" eventType="valueChanged" id="NVX-tC-vko"/>
+                    </connections>
                 </segmentedControl>
             </subviews>
             <color key="backgroundColor" red="0.16470588235294117" green="0.16470588235294117" blue="0.16470588235294117" alpha="1" colorSpace="calibratedRGB"/>

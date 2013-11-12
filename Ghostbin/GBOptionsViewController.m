@@ -35,19 +35,8 @@
     id myJsonObj = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&error];
     NSLog(@"%lu", (unsigned long)[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] count]);
     dataArray = [[NSMutableArray alloc] init];
+
     
-    // Add some data for demo purposes.
-    /*[dataArray addObject:@"Plain Text"];
-    [dataArray addObject:@"Objective-C + Logos"];
-    [dataArray addObject:@"Objective-C"];
-    [dataArray addObject:@"C"];
-    [dataArray addObject:@"Five"];*/
-    int count = 0;
-    while (count < [[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] count]) {
-        NSLog(@"%i", count);
-     [dataArray addObject:[[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"name"]];
-        count++;
-    }
     //NSLog(@"%@", [[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:3] objectForKey:@"name"]);
     //dataArray = [[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:0] objectForKey:@"name"];
     [self.languagePicker setDataSource: self];
@@ -60,7 +49,35 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)segmentLanguage:(id)sender {
+    NSData *jsonData = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://ghostbin.com/languages.json"]];
+    
+    // Convert your JSON object to an 'NS' object
+    NSError *error;
+    id myJsonObj = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&error];
+    NSLog(@"%lu", (unsigned long)[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] count]);
+    dataArray = [[NSMutableArray alloc] init];
+    if ([[self.segmentControl titleForSegmentAtIndex: [self.segmentControl selectedSegmentIndex]] isEqualToString:@"Text"]) {
+        int count = 0;
+        while (count < [[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] count]) {
+            NSLog(@"%i", count);
+            [dataArray addObject:[[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"name"]];
+            count++;
+        }
+    }
+    if ([[self.segmentControl titleForSegmentAtIndex: [self.segmentControl selectedSegmentIndex]] isEqualToString:@"Common Languages"]) {
+        int count = 0;
+        while (count < [[[myJsonObj objectAtIndex:1] objectForKey:@"languages"] count]) {
+            NSLog(@"%i", count);
+            [dataArray addObject:[[[[[myJsonObj objectAtIndex:1] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"name"]];
+            count++;
+        }
+    }
+    [self.languagePicker reloadAllComponents];
+}
+
 - (IBAction)saveOptions:(id)sender {
+    
 }
 
 - (IBAction)done:(id)sender {

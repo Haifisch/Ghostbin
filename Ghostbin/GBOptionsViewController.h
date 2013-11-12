@@ -14,6 +14,8 @@
 @property (strong, nonatomic) IBOutlet UIPickerView *languagePicker;
 @property (nonatomic, retain) NSMutableArray *dataArray;
 @property (strong, nonatomic) IBOutlet UITextField *languageField;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *segmentControl;
+- (IBAction)segmentLanguage:(id)sender;
 
 - (IBAction)saveOptions:(id)sender;
 - (IBAction)done:(id)sender;
