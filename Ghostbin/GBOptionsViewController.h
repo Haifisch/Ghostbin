@@ -15,6 +15,7 @@
 @property (nonatomic, retain) NSMutableArray *dataArray;
 @property (strong, nonatomic) IBOutlet UITextField *languageField;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *segmentControl;
+@property (strong, nonatomic) IBOutlet UITextField *timeField;
 - (IBAction)segmentLanguage:(id)sender;
 
 - (IBAction)saveOptions:(id)sender;

@@ -35,7 +35,12 @@
     id myJsonObj = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&error];
     NSLog(@"%lu", (unsigned long)[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] count]);
     dataArray = [[NSMutableArray alloc] init];
-
+    int count = 0;
+    while (count < [[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] count]) {
+        NSLog(@"%i", count);
+        [dataArray addObject:[[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"id"]];
+        count++;
+    }
     
     //NSLog(@"%@", [[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:3] objectForKey:@"name"]);
     //dataArray = [[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:0] objectForKey:@"name"];
@@ -61,7 +66,7 @@
         int count = 0;
         while (count < [[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] count]) {
             NSLog(@"%i", count);
-            [dataArray addObject:[[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"name"]];
+            [dataArray addObject:[[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"id"]];
             count++;
         }
     }
@@ -69,7 +74,7 @@
         int count = 0;
         while (count < [[[myJsonObj objectAtIndex:1] objectForKey:@"languages"] count]) {
             NSLog(@"%i", count);
-            [dataArray addObject:[[[[[myJsonObj objectAtIndex:1] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"name"]];
+            [dataArray addObject:[[[[[myJsonObj objectAtIndex:1] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"id"]];
             count++;
         }
     }
@@ -77,7 +82,11 @@
 }
 
 - (IBAction)saveOptions:(id)sender {
-    
+    NSUserDefaults *storage = [NSUserDefaults standardUserDefaults];
+    [storage setObject:@"language_id" forKey:self.languageField.text];
+    if (self.timeField.text != NULL) {
+        [storage setObject:@"expiry_time" forKey:self.timeField.text];
+    }
 }
 
 - (IBAction)done:(id)sender {

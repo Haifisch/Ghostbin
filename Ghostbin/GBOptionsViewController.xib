@@ -9,6 +9,7 @@
                 <outlet property="languageField" destination="2bG-L8-E9P" id="Fru-s9-iDo"/>
                 <outlet property="languagePicker" destination="7Nw-HC-9mR" id="fuS-e6-58R"/>
                 <outlet property="segmentControl" destination="br3-wH-xVZ" id="S2H-aT-KO9"/>
+                <outlet property="timeField" destination="zgB-As-hiU" id="Ga4-j1-HvQ"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
