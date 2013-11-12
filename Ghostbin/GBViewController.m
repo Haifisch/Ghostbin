@@ -18,11 +18,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //For keys and such
+    storage = [NSUserDefaults standardUserDefaults];
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     self.title = @"Ghostbin";
-
-    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStylePlain target:self action:@selector(options:)];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Paste!" style:UIBarButtonItemStylePlain target:self action:@selector(paste:)];
@@ -52,7 +52,7 @@
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textAlignment = NSTextAlignmentCenter;
 
-    UILabel *subtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 20.0f, 200.0f, 20.0f)];
+    subtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 20.0f, 200.0f, 20.0f)];
     subtitleLabel.font = [UIFont systemFontOfSize:10.0f];
     subtitleLabel.textColor = [UIColor whiteColor];
     subtitleLabel.backgroundColor = [UIColor clearColor];
@@ -61,7 +61,7 @@
     titleLabel.text = @"Ghostbin";
     [titleLabel sizeToFit];
     
-    subtitleLabel.text = @"Objective-C";
+    subtitleLabel.text = @"Not Set";
     [subtitleLabel sizeToFit];
     
     
@@ -78,7 +78,12 @@
     [self.navigationItem setTitleView:customView];
     
 }
+-(void)viewDidAppear:(BOOL)animated{
+    subtitleLabel.text = [storage objectForKey:@"language_id"];
+    [subtitleLabel sizeToFit];
+    NSLog(@"%@", [storage objectForKey:@"language_id"]);
 
+}
 - (void)options:(id)sender {
     GBOptionsViewController *optionsView = [[GBOptionsViewController alloc] initWithNibName:@"GBOptionsViewController" bundle:nil];
     [optionsView setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
@@ -89,19 +94,22 @@
     NSLog(@"%@", self.textView.text);
     if (self.textView.text != NULL) {
         NSLog(@"uwot");
-        NSString *post = [NSString stringWithFormat:@"text=%@&expire=10d&lang=objective-c", self.textView.text];
-        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding];
+        NSString *text_format = [self.textView.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *post = [NSString stringWithFormat:@"text=%@&expire=10m&lang=%@", text_format, [storage objectForKey:@"language_id"]];
+        NSLog(@"%@",post);
+        NSString *semiColonFix = [post stringByReplacingOccurrencesOfString:@";" withString:@"%3b"];
+        NSData *postData = [semiColonFix dataUsingEncoding:NSUTF8StringEncoding];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://ghostbin.com/paste/new"]
                                                                     cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
                                                                 timeoutInterval:60.0];
         [request setHTTPMethod:@"POST"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         [request setValue:@"Ghostbin iOS" forHTTPHeaderField:@"User-Agent"];
         [request setHTTPBody:postData];
         _connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     }else{
         UIAlertView *oopsAlert = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:@"You didn't input anything to paste!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [oopsAlert show];
-        
     }
 
     

@@ -26,6 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+   
     self.view.backgroundColor = [UIColor colorWithRed:42/255.0f green:42/255.0f blue:42/255.0f alpha:1.0f];
     // Init the data array.
     NSData *jsonData = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://ghostbin.com/languages.json"]];
@@ -47,7 +48,9 @@
     [self.languagePicker setDataSource: self];
     [self.languagePicker setDelegate: self];
 }
-
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    [self.view endEditing:YES];// this will do the trick
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -70,11 +73,19 @@
             count++;
         }
     }
-    if ([[self.segmentControl titleForSegmentAtIndex: [self.segmentControl selectedSegmentIndex]] isEqualToString:@"Common Languages"]) {
+    if ([[self.segmentControl titleForSegmentAtIndex: [self.segmentControl selectedSegmentIndex]] isEqualToString:@"Common"]) {
         int count = 0;
         while (count < [[[myJsonObj objectAtIndex:1] objectForKey:@"languages"] count]) {
             NSLog(@"%i", count);
             [dataArray addObject:[[[[[myJsonObj objectAtIndex:1] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"id"]];
+            count++;
+        }
+    }
+    if ([[self.segmentControl titleForSegmentAtIndex: [self.segmentControl selectedSegmentIndex]] isEqualToString:@"Other"]) {
+        int count = 0;
+        while (count < [[[myJsonObj objectAtIndex:2] objectForKey:@"languages"] count]) {
+            NSLog(@"%i", count);
+            [dataArray addObject:[[[[[myJsonObj objectAtIndex:2] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"id"]];
             count++;
         }
     }
@@ -83,10 +94,11 @@
 
 - (IBAction)saveOptions:(id)sender {
     NSUserDefaults *storage = [NSUserDefaults standardUserDefaults];
-    [storage setObject:@"language_id" forKey:self.languageField.text];
-    if (self.timeField.text != NULL) {
-        [storage setObject:@"expiry_time" forKey:self.timeField.text];
-    }
+    [storage setObject:self.languageField.text forKey:@"language_id"];
+    [storage setObject:self.timeField.text forKey:@"expiry_time"];
+    [storage synchronize];
+    NSLog(@"%@", [storage objectForKey:@"language_id"]);
+
 }
 
 - (IBAction)done:(id)sender {
@@ -122,7 +134,7 @@
     UILabel *lblRow = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [pickerView bounds].size.width, 44.0f)];
     
     // Center the text.
-    [lblRow setTextAlignment:UITextAlignmentCenter];
+    [lblRow setTextAlignment:NSTextAlignmentCenter];
     
     // Make the text color red.
     [lblRow setTextColor: [UIColor redColor]];

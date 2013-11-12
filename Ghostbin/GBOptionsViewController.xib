@@ -74,7 +74,8 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <segments>
                         <segment title="Text"/>
-                        <segment title="Common Languages"/>
+                        <segment title="Common"/>
+                        <segment title="Other"/>
                     </segments>
                     <connections>
                         <action selector="segmentLanguage:" destination="-1" eventType="valueChanged" id="NVX-tC-vko"/>
