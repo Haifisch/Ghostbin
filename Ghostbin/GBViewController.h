@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Chromatism/JLTextViewController.h"
-
+#import "GBOptionsViewController.h"
 @interface GBViewController : JLTextViewController <NSURLConnectionDelegate>{
     NSMutableData *_responseData;
     NSURLConnection *_connection;

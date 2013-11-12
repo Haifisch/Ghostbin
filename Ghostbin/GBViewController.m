@@ -73,26 +73,38 @@
     [customView addSubview:titleLabel];
     [customView addSubview:subtitleLabel];
     
-    NSLog(@"%@", NSStringFromCGRect(customView.frame));
+    //NSLog(@"%@", NSStringFromCGRect(customView.frame));
     
     [self.navigationItem setTitleView:customView];
     
 }
 
 - (void)options:(id)sender {
-    // Display options
+    GBOptionsViewController *optionsView = [[GBOptionsViewController alloc] initWithNibName:@"GBOptionsViewController" bundle:nil];
+    [optionsView setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self presentViewController:optionsView animated:YES completion:nil];
 }
 
 - (void)paste:(id)sender {
-    NSString *post = [NSString stringWithFormat:@"text=%@&expire=10d&lang=objective-c", self.textView.text];
-    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://ghostbin.com/paste/new"]
-                                                                cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                                            timeoutInterval:60.0];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"Ghostbin iOS" forHTTPHeaderField:@"User-Agent"];
-    [request setHTTPBody:postData];
-    _connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSLog(@"%@", self.textView.text);
+    if (self.textView.text != NULL) {
+        NSLog(@"uwot");
+        NSString *post = [NSString stringWithFormat:@"text=%@&expire=10d&lang=objective-c", self.textView.text];
+        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://ghostbin.com/paste/new"]
+                                                                    cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                                timeoutInterval:60.0];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:@"Ghostbin iOS" forHTTPHeaderField:@"User-Agent"];
+        [request setHTTPBody:postData];
+        _connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    }else{
+        UIAlertView *oopsAlert = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:@"You didn't input anything to paste!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [oopsAlert show];
+        
+    }
+
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -148,6 +160,8 @@
         _uploading = NO;
         
         NSLog(@"%@",[[request URL] copy]);
+        UIAlertView *urlAlert = [[UIAlertView alloc] initWithTitle:@"Pasted!" message:[NSString stringWithFormat:@"%@",[[request URL] copy]] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [urlAlert show];
         return nil;
     } else {
         return request;

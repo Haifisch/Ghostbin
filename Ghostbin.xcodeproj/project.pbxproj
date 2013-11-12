@@ -23,6 +23,8 @@
 		1A51A295183014A0007CC66B /* css.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1A51A294183014A0007CC66B /* css.plist */; };
 		1A699540182FF69C00FC8CBE /* objectivec.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1A69953F182FF69C00FC8CBE /* objectivec.plist */; };
 		1A6E5FEA182FDD7600D57404 /* libChromatism.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A6E5FE5182FDD5900D57404 /* libChromatism.a */; };
+		B97AD7BD1831BA0300B6BD25 /* GBOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B97AD7BB1831BA0300B6BD25 /* GBOptionsViewController.m */; };
+		B97AD7BE1831BA0300B6BD25 /* GBOptionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B97AD7BC1831BA0300B6BD25 /* GBOptionsViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +80,9 @@
 		1A51A294183014A0007CC66B /* css.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = css.plist; path = Chromatism/Chromatism/Chromatism/Lexers/css.plist; sourceTree = SOURCE_ROOT; };
 		1A69953F182FF69C00FC8CBE /* objectivec.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = objectivec.plist; path = ../Chromatism/Chromatism/Chromatism/Lexers/objectivec.plist; sourceTree = "<group>"; };
 		1A6E5FDF182FDD5900D57404 /* Chromatism.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Chromatism.xcodeproj; path = Chromatism/Chromatism/Chromatism.xcodeproj; sourceTree = "<group>"; };
+		B97AD7BA1831BA0300B6BD25 /* GBOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBOptionsViewController.h; sourceTree = "<group>"; };
+		B97AD7BB1831BA0300B6BD25 /* GBOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBOptionsViewController.m; sourceTree = "<group>"; };
+		B97AD7BC1831BA0300B6BD25 /* GBOptionsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GBOptionsViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,10 +148,12 @@
 				1A3E73221822F2BA00D542E3 /* GBAppDelegate.m */,
 				1A3E732A1822F2BA00D542E3 /* GBViewController.h */,
 				1A3E732B1822F2BA00D542E3 /* GBViewController.m */,
+				B97AD7BA1831BA0300B6BD25 /* GBOptionsViewController.h */,
+				B97AD7BB1831BA0300B6BD25 /* GBOptionsViewController.m */,
+				B97AD7BC1831BA0300B6BD25 /* GBOptionsViewController.xib */,
 				1A3E732D1822F2BA00D542E3 /* Images.xcassets */,
 				1A3E73191822F2BA00D542E3 /* Supporting Files */,
 			);
-			name = Ghostbin;
 			path = Ghostbin;
 			sourceTree = "<group>";
 		};
@@ -169,7 +176,6 @@
 				1A3E73401822F2BA00D542E3 /* GhostbinTests.m */,
 				1A3E733B1822F2BA00D542E3 /* Supporting Files */,
 			);
-			name = GhostbinTests;
 			path = GhostbinTests;
 			sourceTree = "<group>";
 		};
@@ -296,6 +302,7 @@
 				1A3E732E1822F2BA00D542E3 /* Images.xcassets in Resources */,
 				1A699540182FF69C00FC8CBE /* objectivec.plist in Resources */,
 				1A3E731D1822F2BA00D542E3 /* InfoPlist.strings in Resources */,
+				B97AD7BE1831BA0300B6BD25 /* GBOptionsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +321,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B97AD7BD1831BA0300B6BD25 /* GBOptionsViewController.m in Sources */,
 				1A3E731F1822F2BA00D542E3 /* main.m in Sources */,
 				1A3E732C1822F2BA00D542E3 /* GBViewController.m in Sources */,
 				1A3E73231822F2BA00D542E3 /* GBAppDelegate.m in Sources */,
