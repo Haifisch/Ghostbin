@@ -20,7 +20,7 @@
     [super viewDidLoad];
     //For keys and such
     storage = [NSUserDefaults standardUserDefaults];
-	// Do any additional setup after loading the view, typically from a nib.
+    //Navbar
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     self.title = @"Ghostbin";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStylePlain target:self action:@selector(options:)];
@@ -60,7 +60,6 @@
     
     titleLabel.text = @"Ghostbin";
     [titleLabel sizeToFit];
-    
     subtitleLabel.text = @"Not Set";
     [subtitleLabel sizeToFit];
     
@@ -69,7 +68,7 @@
     customView.frame = CGRectMake(0,0, titleLabel.frame.size.width, 36.0f);
     
     subtitleLabel.frame = CGRectMake(subtitleLabel.frame.origin.x, subtitleLabel.frame.origin.y, customView.frame.size.width, subtitleLabel.frame.size.height);
-    
+    [subtitleLabel setTextAlignment:NSTextAlignmentCenter];
     [customView addSubview:titleLabel];
     [customView addSubview:subtitleLabel];
     
@@ -81,7 +80,8 @@
 -(void)viewDidAppear:(BOOL)animated{
     subtitleLabel.text = [storage objectForKey:@"language_id"];
     [subtitleLabel sizeToFit];
-    NSLog(@"%@", [storage objectForKey:@"language_id"]);
+    [subtitleLabel setTextAlignment:NSTextAlignmentCenter];
+    //NSLog(@"%@", [storage objectForKey:@"language_id"]);
 
 }
 - (void)options:(id)sender {
@@ -96,9 +96,11 @@
         NSLog(@"uwot");
         NSString *text_format = [self.textView.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSString *post = [NSString stringWithFormat:@"text=%@&expire=10m&lang=%@", text_format, [storage objectForKey:@"language_id"]];
-        NSLog(@"%@",post);
         NSString *semiColonFix = [post stringByReplacingOccurrencesOfString:@";" withString:@"%3b"];
-        NSData *postData = [semiColonFix dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *addtionFix = [semiColonFix stringByReplacingOccurrencesOfString:@"+" withString:@"%2b"];
+        NSLog(@"%@",addtionFix);
+
+        NSData *postData = [addtionFix dataUsingEncoding:NSUTF8StringEncoding];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://ghostbin.com/paste/new"]
                                                                     cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
                                                                 timeoutInterval:60.0];

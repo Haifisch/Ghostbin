@@ -26,7 +26,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   
+    
+    //begin uitoolbar
+    CGRect frame = CGRectMake(0, [[UIScreen mainScreen] bounds].size.height - 44, [[UIScreen mainScreen] bounds].size.width, 44);
+    UIToolbar *toolbar = [[UIToolbar alloc] init];
+    toolbar.frame = frame;
+    toolbar.barStyle = UIBarStyleBlackTranslucent;
+    UIBarButtonItem * leftButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Done" style: UIBarButtonItemStyleBordered target: self action: @selector(done:)];
+    UIBarButtonItem *middleItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    middleItem.width = 227;
+    UIBarButtonItem *rightButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(saveOptions:)];
+    NSArray *toolBarItemsArray = [[NSArray alloc] initWithObjects:leftButtonItem,middleItem,rightButtonItem, nil];
+    [toolbar setItems:toolBarItemsArray animated:NO];
+    [self.view addSubview:toolbar];
+    //end uitoolbar
+    
     self.view.backgroundColor = [UIColor colorWithRed:42/255.0f green:42/255.0f blue:42/255.0f alpha:1.0f];
     // Init the data array.
     NSData *jsonData = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://ghostbin.com/languages.json"]];
@@ -69,7 +83,7 @@
         int count = 0;
         while (count < [[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] count]) {
             NSLog(@"%i", count);
-            [dataArray addObject:[[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"id"]];
+            [dataArray addObject:[[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"name"]];
             count++;
         }
     }
@@ -77,7 +91,7 @@
         int count = 0;
         while (count < [[[myJsonObj objectAtIndex:1] objectForKey:@"languages"] count]) {
             NSLog(@"%i", count);
-            [dataArray addObject:[[[[[myJsonObj objectAtIndex:1] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"id"]];
+            [dataArray addObject:[[[[[myJsonObj objectAtIndex:1] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"name"]];
             count++;
         }
     }
@@ -85,7 +99,7 @@
         int count = 0;
         while (count < [[[myJsonObj objectAtIndex:2] objectForKey:@"languages"] count]) {
             NSLog(@"%i", count);
-            [dataArray addObject:[[[[[myJsonObj objectAtIndex:2] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"id"]];
+            [dataArray addObject:[[[[[myJsonObj objectAtIndex:2] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"name"]];
             count++;
         }
     }
