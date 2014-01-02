@@ -13,7 +13,7 @@
 @end
 
 @implementation GBOptionsViewController
-@synthesize dataArray;
+@synthesize dataArray,selectionArray;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -52,11 +52,16 @@
     dataArray = [[NSMutableArray alloc] init];
     int count = 0;
     while (count < [[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] count]) {
-        NSLog(@"%i", count);
-        [dataArray addObject:[[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"id"]];
+        //NSLog(@"%i", count);
+        [dataArray addObject:[[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"name"]];
         count++;
     }
-    
+    count = 0;
+    while (count < [[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] count]) {
+        //NSLog(@"%i", count);
+        [selectionArray addObject:[[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"name"]];
+        count++;
+    }
     //NSLog(@"%@", [[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:3] objectForKey:@"name"]);
     //dataArray = [[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:0] objectForKey:@"name"];
     [self.languagePicker setDataSource: self];
@@ -79,11 +84,14 @@
     id myJsonObj = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&error];
     NSLog(@"%lu", (unsigned long)[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] count]);
     dataArray = [[NSMutableArray alloc] init];
+    selectionArray = [[NSMutableArray alloc] init];
+
     if ([[self.segmentControl titleForSegmentAtIndex: [self.segmentControl selectedSegmentIndex]] isEqualToString:@"Text"]) {
         int count = 0;
         while (count < [[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] count]) {
             NSLog(@"%i", count);
             [dataArray addObject:[[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"name"]];
+            [selectionArray addObject:[[[[[myJsonObj objectAtIndex:0] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"id"]];
             count++;
         }
     }
@@ -92,6 +100,7 @@
         while (count < [[[myJsonObj objectAtIndex:1] objectForKey:@"languages"] count]) {
             NSLog(@"%i", count);
             [dataArray addObject:[[[[[myJsonObj objectAtIndex:1] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"name"]];
+            [selectionArray addObject:[[[[[myJsonObj objectAtIndex:1] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"id"]];
             count++;
         }
     }
@@ -100,6 +109,7 @@
         while (count < [[[myJsonObj objectAtIndex:2] objectForKey:@"languages"] count]) {
             NSLog(@"%i", count);
             [dataArray addObject:[[[[[myJsonObj objectAtIndex:2] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"name"]];
+            [selectionArray addObject:[[[[[myJsonObj objectAtIndex:2] objectForKey:@"languages"] allObjects] objectAtIndex:count] objectForKey:@"id"]];
             count++;
         }
     }
@@ -108,10 +118,8 @@
 
 - (IBAction)saveOptions:(id)sender {
     NSUserDefaults *storage = [NSUserDefaults standardUserDefaults];
-    [storage setObject:self.languageField.text forKey:@"language_id"];
     [storage setObject:self.timeField.text forKey:@"expiry_time"];
     [storage synchronize];
-    NSLog(@"%@", [storage objectForKey:@"language_id"]);
 
 }
 
@@ -136,11 +144,17 @@
 // Do something with the selected row.
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
     //NSLog(@"You selected this: %@", [dataArray objectAtIndex: row]);
-    self.languageField.text = [dataArray objectAtIndex: row];
+    NSUserDefaults *storage = [NSUserDefaults standardUserDefaults];
+    [storage setObject:[selectionArray objectAtIndex:row] forKey:@"language_id"];
+    [storage synchronize];
+    NSLog(@"language_id: %@", [storage objectForKey:@"language_id"]);
+
+    self.languageField.text = [dataArray objectAtIndex:row];
+    
 }
 -(UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
     // Get the text of the row.
-    NSString *rowItem = [dataArray objectAtIndex: row];
+    NSString *rowItem = [dataArray objectAtIndex:row];
     
     // Create and init a new UILabel.
     // We must set our label's width equal to our picker's width.

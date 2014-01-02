@@ -13,6 +13,8 @@
 }
 @property (strong, nonatomic) IBOutlet UIPickerView *languagePicker;
 @property (nonatomic, retain) NSMutableArray *dataArray;
+@property (nonatomic, retain) NSMutableArray *selectionArray;
+
 @property (strong, nonatomic) IBOutlet UITextField *languageField;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 @property (strong, nonatomic) IBOutlet UITextField *timeField;
